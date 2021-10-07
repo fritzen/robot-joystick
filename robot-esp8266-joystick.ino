@@ -13,24 +13,13 @@ Servo myservo2;  // create servo object to control a servo
 #include "js.h"
 #include "html.h"
 
-//MODELO: PRIMEIRO COM 3 LEDS
-//#define CENTER_SERVO_1 90
-//#define CENTER_SERVO_2 96
-
-//MODELO: DIRETO NO SUPORTE DE PILHAS
-//#define CENTER_SERVO_1 94
-//#define CENTER_SERVO_2 99
-
-//MODELO: BARQUINHO
 #define CENTER_SERVO_1 90
 #define CENTER_SERVO_2 90
 
-//LEDS SAO OPCIONAIS
-#define LED1 4
-#define LED2 0
-#define LED3 2
-
-
+int PWMA=5;//Right side 
+int PWMB=4;//Left side 
+int DA=0;//Right reverse 
+int DB=2;//Left reverse 
 
 
 WebSocketsServer webSocket = WebSocketsServer(81);
@@ -58,10 +47,12 @@ void setup()
   myservo1.attach(16);
   myservo2.attach(05);
   STOP();
-  pinMode(LED1, OUTPUT);
-  pinMode(LED2, OUTPUT);
-  pinMode(LED3, OUTPUT);
 
+   pinMode(PWMA, OUTPUT); 
+   pinMode(PWMB, OUTPUT); 
+   pinMode(DA, OUTPUT); 
+   pinMode(DB, OUTPUT); 
+ 
   WiFi.mode(WIFI_AP);  
   
 
@@ -122,12 +113,15 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length
 }
 
  
-void DOWN() {
+void DOWN() { //Backward     
   myservo1.write(0);
   myservo2.write(180);
-  digitalWrite(LED1, HIGH);
-  digitalWrite(LED2, HIGH);
-  digitalWrite(LED3, HIGH);
+
+  digitalWrite(PWMA, HIGH); 
+  digitalWrite(DA, HIGH); 
+  
+  digitalWrite(PWMB, HIGH); 
+  digitalWrite(DB, HIGH);
 }
 
  
@@ -136,6 +130,12 @@ void LEFT_UP() {
     delay(1);
     UP();
     delay(1);
+
+    digitalWrite(PWMA, LOW); 
+    digitalWrite(DA, LOW); 
+    
+    digitalWrite(PWMB, HIGH); 
+    digitalWrite(DB, LOW); 
 }
 
  
@@ -144,15 +144,23 @@ void RIGHT_UP() {
     delay(1);
     UP();
     delay(1);
+
+    digitalWrite(PWMA, HIGH); 
+    digitalWrite(DA, LOW); 
+    
+    digitalWrite(PWMB, LOW); 
+    digitalWrite(DB, LOW);
 }
 
-void UP() {
+void UP() {  //Forward 
   myservo1.write(180);
   myservo2.write(0);
-
-  digitalWrite(LED1, HIGH);
-  digitalWrite(LED2, LOW);
-  digitalWrite(LED3, HIGH);
+  
+  digitalWrite(PWMA, HIGH); 
+  digitalWrite(DA, LOW); 
+  
+  digitalWrite(PWMB, HIGH); 
+  digitalWrite(DB, LOW); 
 }
 
 void LEFT_DOWN() {
@@ -160,6 +168,12 @@ void LEFT_DOWN() {
     delay(1);
     DOWN();
     delay(1);
+    
+    digitalWrite(PWMA, LOW); 
+    digitalWrite(DA, LOW); 
+    
+    digitalWrite(PWMB, HIGH); 
+    digitalWrite(DB, HIGH); 
 }
 
 void RIGHT_DOWN() {
@@ -167,24 +181,36 @@ void RIGHT_DOWN() {
     delay(1);
     DOWN();
     delay(1);
+
+    digitalWrite(PWMA, HIGH); 
+    digitalWrite(DA, HIGH); 
+    
+    digitalWrite(PWMB, LOW); 
+    digitalWrite(DB, LOW); 
 }
 
 void RIGHT (void)
 {
   myservo1.write(180);
   myservo2.write(180);
-  digitalWrite(LED1, HIGH);
-  digitalWrite(LED2, LOW);
-  digitalWrite(LED3, LOW);
+
+  digitalWrite(PWMA, 450); 
+  digitalWrite(DA, LOW); 
+  
+  digitalWrite(PWMB, 450); 
+  digitalWrite(DB, HIGH); 
 }
 
 void LEFT (void)
 {
   myservo1.write(0);
   myservo2.write(0);
-  digitalWrite(LED1, LOW);
-  digitalWrite(LED2, LOW);
-  digitalWrite(LED3, HIGH);
+
+  digitalWrite(PWMA, 450); 
+  digitalWrite(DA, HIGH); 
+  
+  digitalWrite(PWMB, 450); 
+  digitalWrite(DB, LOW); 
 }
 
 void STOP (void)
@@ -192,7 +218,9 @@ void STOP (void)
   myservo1.write(CENTER_SERVO_1);
   myservo2.write(CENTER_SERVO_2);
 
-  digitalWrite(LED1, LOW);
-  digitalWrite(LED2, LOW);
-  digitalWrite(LED3, LOW);
+  digitalWrite(PWMA, LOW); 
+  digitalWrite(DA, LOW); 
+  
+  digitalWrite(PWMB, LOW); 
+  digitalWrite(DB, LOW); 
 }
