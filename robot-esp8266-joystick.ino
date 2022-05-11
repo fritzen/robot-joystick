@@ -1,7 +1,8 @@
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
 #include <ESP8266WebServer.h>
-#include <WebSocketsServer.h>
+#include <WebSocketsServer.h> //Websockets Lib, By Markus
+
 #include <Hash.h>
 #include <Servo.h>
 
@@ -16,10 +17,11 @@ Servo myservo2;  // create servo object to control a servo
 #define CENTER_SERVO_1 90
 #define CENTER_SERVO_2 90
 
-int PWMA=5;//Right side 
-int PWMB=4;//Left side 
-int DA=0;//Right reverse 
-int DB=2;//Left reverse 
+int PWMA=5;
+int DA=4;
+
+int PWMB=12;
+int DB=13;
 
 
 WebSocketsServer webSocket = WebSocketsServer(81);
@@ -117,13 +119,24 @@ void DOWN() { //Backward
   myservo1.write(0);
   myservo2.write(180);
 
-  digitalWrite(PWMA, HIGH); 
+  digitalWrite(PWMA, LOW); 
   digitalWrite(DA, HIGH); 
-  
-  digitalWrite(PWMB, HIGH); 
+ 
+  digitalWrite(PWMB, LOW); 
   digitalWrite(DB, HIGH);
 }
 
+
+void UP() {  //Forward 
+  myservo1.write(180);
+  myservo2.write(0);
+  
+  digitalWrite(PWMA, HIGH); 
+  digitalWrite(DA, LOW); 
+  
+  digitalWrite(PWMB, HIGH); 
+  digitalWrite(DB, LOW); 
+}
  
 void LEFT_UP() {  
     LEFT();
@@ -152,16 +165,6 @@ void RIGHT_UP() {
     digitalWrite(DB, LOW);
 }
 
-void UP() {  //Forward 
-  myservo1.write(180);
-  myservo2.write(0);
-  
-  digitalWrite(PWMA, HIGH); 
-  digitalWrite(DA, LOW); 
-  
-  digitalWrite(PWMB, HIGH); 
-  digitalWrite(DB, LOW); 
-}
 
 void LEFT_DOWN() {
     LEFT();
@@ -172,7 +175,7 @@ void LEFT_DOWN() {
     digitalWrite(PWMA, LOW); 
     digitalWrite(DA, LOW); 
     
-    digitalWrite(PWMB, HIGH); 
+    digitalWrite(PWMB, LOW); 
     digitalWrite(DB, HIGH); 
 }
 
@@ -182,7 +185,7 @@ void RIGHT_DOWN() {
     DOWN();
     delay(1);
 
-    digitalWrite(PWMA, HIGH); 
+    digitalWrite(PWMA, LOW); 
     digitalWrite(DA, HIGH); 
     
     digitalWrite(PWMB, LOW); 
