@@ -115,6 +115,17 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length
 }
 
  
+void UP() {  //Forward 
+  myservo1.write(180);
+  myservo2.write(0);
+  
+  digitalWrite(PWMA, HIGH); 
+  digitalWrite(DA, LOW); 
+  
+  digitalWrite(PWMB, HIGH); 
+  digitalWrite(DB, LOW); 
+}
+
 void DOWN() { //Backward     
   myservo1.write(0);
   myservo2.write(180);
@@ -126,70 +137,16 @@ void DOWN() { //Backward
   digitalWrite(DB, HIGH);
 }
 
-
-void UP() {  //Forward 
-  myservo1.write(180);
+void LEFT (void)
+{
+  myservo1.write(0);
   myservo2.write(0);
-  
-  digitalWrite(PWMA, HIGH); 
-  digitalWrite(DA, LOW); 
+
+  digitalWrite(PWMA, LOW); 
+  digitalWrite(DA, HIGH); 
   
   digitalWrite(PWMB, HIGH); 
   digitalWrite(DB, LOW); 
-}
- 
-void LEFT_UP() {  
-    LEFT();
-    delay(1);
-    UP();
-    delay(1);
-
-    digitalWrite(PWMA, LOW); 
-    digitalWrite(DA, LOW); 
-    
-    digitalWrite(PWMB, HIGH); 
-    digitalWrite(DB, LOW); 
-}
-
- 
-void RIGHT_UP() {
-    RIGHT();
-    delay(1);
-    UP();
-    delay(1);
-
-    digitalWrite(PWMA, HIGH); 
-    digitalWrite(DA, LOW); 
-    
-    digitalWrite(PWMB, LOW); 
-    digitalWrite(DB, LOW);
-}
-
-
-void LEFT_DOWN() {
-    LEFT();
-    delay(1);
-    DOWN();
-    delay(1);
-    
-    digitalWrite(PWMA, LOW); 
-    digitalWrite(DA, LOW); 
-    
-    digitalWrite(PWMB, LOW); 
-    digitalWrite(DB, HIGH); 
-}
-
-void RIGHT_DOWN() {
-    RIGHT();
-    delay(1);
-    DOWN();
-    delay(1);
-
-    digitalWrite(PWMA, LOW); 
-    digitalWrite(DA, HIGH); 
-    
-    digitalWrite(PWMB, LOW); 
-    digitalWrite(DB, LOW); 
 }
 
 void RIGHT (void)
@@ -197,23 +154,11 @@ void RIGHT (void)
   myservo1.write(180);
   myservo2.write(180);
 
-  digitalWrite(PWMA, 450); 
+  digitalWrite(PWMA, HIGH); 
   digitalWrite(DA, LOW); 
   
-  digitalWrite(PWMB, 450); 
+  digitalWrite(PWMB, LOW); 
   digitalWrite(DB, HIGH); 
-}
-
-void LEFT (void)
-{
-  myservo1.write(0);
-  myservo2.write(0);
-
-  digitalWrite(PWMA, 450); 
-  digitalWrite(DA, HIGH); 
-  
-  digitalWrite(PWMB, 450); 
-  digitalWrite(DB, LOW); 
 }
 
 void STOP (void)
@@ -226,4 +171,51 @@ void STOP (void)
   
   digitalWrite(PWMB, LOW); 
   digitalWrite(DB, LOW); 
+}
+
+void LEFT_UP() {  
+  myservo1.write(0);
+  myservo2.write(0);
+
+  digitalWrite(PWMA, HIGH); 
+  digitalWrite(DA, HIGH); 
+  
+  digitalWrite(PWMB, HIGH); 
+  digitalWrite(DB, LOW); 
+}
+
+ 
+void RIGHT_UP() {
+  myservo1.write(180);
+  myservo2.write(180);
+
+  digitalWrite(PWMA, HIGH); 
+  digitalWrite(DA, LOW); 
+  
+  digitalWrite(PWMB, HIGH); 
+  digitalWrite(DB, HIGH); 
+}
+
+
+void LEFT_DOWN() {
+  myservo1.write(0);
+  myservo2.write(0);
+
+  digitalWrite(PWMA, HIGH); 
+  digitalWrite(DA, HIGH); 
+  
+  digitalWrite(PWMB, LOW); 
+  digitalWrite(DB, HIGH); 
+
+}
+
+void RIGHT_DOWN() {
+  myservo1.write(180);
+  myservo2.write(180);
+
+  digitalWrite(PWMA, LOW); 
+  digitalWrite(DA, HIGH); 
+  
+  digitalWrite(PWMB, HIGH); 
+  digitalWrite(DB, HIGH); 
 }
