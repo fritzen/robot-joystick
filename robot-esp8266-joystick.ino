@@ -1,7 +1,7 @@
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
 #include <ESP8266WebServer.h>
-#include <WebSocketsServer.h> //Websockets Lib, By Markus
+#include <WebSocketsServer.h> //Websockets Lib, By Markus https://github.com/Links2004/arduinoWebSockets
 
 #include <Hash.h>
 #include <Servo.h>
