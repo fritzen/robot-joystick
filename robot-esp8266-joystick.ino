@@ -116,8 +116,8 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length
 
  
 void UP() {  //Forward 
-  myservo1.write(180);
-  myservo2.write(0);
+  myservo1.write(175);
+  myservo2.write(5);
   
   digitalWrite(PWMA, HIGH); 
   digitalWrite(DA, LOW); 
@@ -127,8 +127,8 @@ void UP() {  //Forward
 }
 
 void DOWN() { //Backward     
-  myservo1.write(0);
-  myservo2.write(180);
+  myservo1.write(5);
+  myservo2.write(175);
 
   digitalWrite(PWMA, LOW); 
   digitalWrite(DA, HIGH); 
