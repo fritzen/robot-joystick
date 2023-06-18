@@ -23,13 +23,14 @@ int DA=4;
 int PWMB=12;
 int DB=13;
 
+bool useHBridgeControl = false; // Defina como false para usar o controle dos servos motores
 
 WebSocketsServer webSocket = WebSocketsServer(81);
 ESP8266WebServer server(80);
 
 uint8_t pin_led = 16;
-char* ssid = "YOUR_SSID";
-char* password = "YOUR_PASSWORD";
+//char* ssid = "YOUR_SSID";
+//char* password = "YOUR_PASSWORD";
 
 IPAddress local_IP(192,168,0,2);
 IPAddress gateway(192,168,0,1);
@@ -47,13 +48,13 @@ void setup()
   //ATENÇAO: NAO PODE HABILITAR SERIAL POIS GPIO1 (TX) E GPIO3 (RX) SAO UTILIZADOS PARA CONTROLE DO MOTOR
   Serial.begin(9600); 
   myservo1.attach(16);
-  myservo2.attach(05);
+  myservo2.attach(5);
   STOP();
 
-   pinMode(PWMA, OUTPUT); 
-   pinMode(PWMB, OUTPUT); 
-   pinMode(DA, OUTPUT); 
-   pinMode(DB, OUTPUT); 
+  //  pinMode(PWMA, OUTPUT); 
+  //  pinMode(PWMB, OUTPUT); 
+  //  pinMode(DA, OUTPUT); 
+  //  pinMode(DB, OUTPUT); 
  
   WiFi.mode(WIFI_AP);  
   
@@ -115,107 +116,123 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length
 }
 
  
-void UP() {  //Forward 
-  myservo1.write(175);
-  myservo2.write(5);
+void UP() {  // Forward
+  if (useHBridgeControl) {
+    digitalWrite(PWMA, HIGH); 
+    digitalWrite(DA, LOW); 
   
-  digitalWrite(PWMA, HIGH); 
-  digitalWrite(DA, LOW); 
-  
-  digitalWrite(PWMB, HIGH); 
-  digitalWrite(DB, LOW); 
+    digitalWrite(PWMB, HIGH); 
+    digitalWrite(DB, LOW); 
+  } else {
+    myservo1.write(175);
+    myservo2.write(5);
+  }
 }
 
-void DOWN() { //Backward     
-  myservo1.write(5);
-  myservo2.write(175);
-
-  digitalWrite(PWMA, LOW); 
-  digitalWrite(DA, HIGH); 
+void DOWN() { // Backward
+  if (useHBridgeControl) {
+    digitalWrite(PWMA, LOW); 
+    digitalWrite(DA, HIGH); 
  
-  digitalWrite(PWMB, LOW); 
-  digitalWrite(DB, HIGH);
+    digitalWrite(PWMB, LOW); 
+    digitalWrite(DB, HIGH);
+  } else {
+    myservo1.write(5);
+    myservo2.write(175);
+  }
 }
 
-void LEFT (void)
-{
-  myservo1.write(0);
-  myservo2.write(0);
-
-  digitalWrite(PWMA, LOW); 
-  digitalWrite(DA, HIGH); 
+void LEFT() {
+  if (useHBridgeControl) {
+    digitalWrite(PWMA, LOW); 
+    digitalWrite(DA, HIGH); 
   
-  digitalWrite(PWMB, HIGH); 
-  digitalWrite(DB, LOW); 
+    digitalWrite(PWMB, HIGH); 
+    digitalWrite(DB, LOW); 
+  } else {
+    myservo1.write(0);
+    myservo2.write(0);
+  }
 }
 
-void RIGHT (void)
-{
-  myservo1.write(180);
-  myservo2.write(180);
-
-  digitalWrite(PWMA, HIGH); 
-  digitalWrite(DA, LOW); 
+void LEFT_UP() {
+  if (useHBridgeControl) {
+    digitalWrite(PWMA, HIGH); 
+    digitalWrite(DA, HIGH); 
   
-  digitalWrite(PWMB, LOW); 
-  digitalWrite(DB, HIGH); 
+    digitalWrite(PWMB, HIGH); 
+    digitalWrite(DB, LOW); 
+  } else {
+    myservo1.write(CENTER_SERVO_1);
+    myservo2.write(0);
+  }
 }
 
-void STOP (void)
-{
-  myservo1.write(CENTER_SERVO_1);
-  myservo2.write(CENTER_SERVO_2);
-
-  digitalWrite(PWMA, LOW); 
-  digitalWrite(DA, LOW); 
-  
-  digitalWrite(PWMB, LOW); 
-  digitalWrite(DB, LOW); 
-}
-
-void LEFT_UP() {  
-  myservo1.write(0);
-  myservo2.write(0);
-
-  digitalWrite(PWMA, HIGH); 
-  digitalWrite(DA, HIGH); 
-  
-  digitalWrite(PWMB, HIGH); 
-  digitalWrite(DB, LOW); 
-}
-
- 
 void RIGHT_UP() {
-  myservo1.write(180);
-  myservo2.write(180);
-
-  digitalWrite(PWMA, HIGH); 
-  digitalWrite(DA, LOW); 
+  if (useHBridgeControl) {
+    digitalWrite(PWMA, HIGH); 
+    digitalWrite(DA, LOW); 
   
-  digitalWrite(PWMB, HIGH); 
-  digitalWrite(DB, HIGH); 
+    digitalWrite(PWMB, HIGH); 
+    digitalWrite(DB, HIGH); 
+  } else {
+    myservo1.write(180);
+    myservo2.write(CENTER_SERVO_1);
+  }
 }
+
+
+void RIGHT() {
+  if (useHBridgeControl) {
+    digitalWrite(PWMA, HIGH); 
+    digitalWrite(DA, LOW); 
+  
+    digitalWrite(PWMB, LOW); 
+    digitalWrite(DB, HIGH); 
+  } else {
+    myservo1.write(180);
+    myservo2.write(180);
+  }
+}
+
+void STOP() {
+  if (useHBridgeControl) {
+    digitalWrite(PWMA, LOW); 
+    digitalWrite(DA, LOW); 
+  
+    digitalWrite(PWMB, LOW); 
+    digitalWrite(DB, LOW); 
+  } else {
+    myservo1.write(CENTER_SERVO_1);
+    myservo2.write(CENTER_SERVO_2);
+  }
+}
+
+
 
 
 void LEFT_DOWN() {
-  myservo1.write(0);
-  myservo2.write(0);
-
-  digitalWrite(PWMA, HIGH); 
-  digitalWrite(DA, HIGH); 
+  if (useHBridgeControl) {
+    digitalWrite(PWMA, HIGH); 
+    digitalWrite(DA, HIGH); 
   
-  digitalWrite(PWMB, LOW); 
-  digitalWrite(DB, HIGH); 
-
+    digitalWrite(PWMB, LOW); 
+    digitalWrite(DB, HIGH); 
+  } else {
+    myservo1.write(0);
+    myservo2.write(0);
+  }
 }
 
 void RIGHT_DOWN() {
-  myservo1.write(180);
-  myservo2.write(180);
-
-  digitalWrite(PWMA, LOW); 
-  digitalWrite(DA, HIGH); 
+  if (useHBridgeControl) {
+    digitalWrite(PWMA, LOW); 
+    digitalWrite(DA, HIGH); 
   
-  digitalWrite(PWMB, HIGH); 
-  digitalWrite(DB, HIGH); 
+    digitalWrite(PWMB, HIGH); 
+    digitalWrite(DB, HIGH); 
+  } else {
+    myservo1.write(180);
+    myservo2.write(180);
+  }
 }
