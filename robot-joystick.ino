@@ -65,13 +65,13 @@ void setup()
 
   //Serial.println(WiFi.softAPIP());
 
-  server.on("/nipplejs.js",[](){server.send_P(200,"application/javascript", js);}); 
+  server.on("/nipplejs.js",[](){server.send_P(200,"application/javascript", js);});
   server.on("/styles.css",[](){server.send_P(200,"text/css", css);});
   server.on("/",[](){server.send_P(200,"text/html", html);});
   server.on("/joy2.html",[](){server.send_P(200,"text/html", webpage);});
 
   webSocket.begin();
-  webSocket.onEvent(webSocketEvent);    
+  webSocket.onEvent(webSocketEvent);
   server.begin();
 }
 void loop() {  
